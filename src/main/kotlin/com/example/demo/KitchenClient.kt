@@ -16,4 +16,19 @@ class KitchenClient {
     fun getDishes(): Flux<Dish> {
         return webClient.get().uri("/").retrieve().bodyToFlux(Dish::class.java)
     }
+
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
+    fun failureGetDishes(): Flux<Dish> {
+        return webClient.get().uri("/failure").retrieve().bodyToFlux(Dish::class.java)
+    }
+
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
+    fun slowGetDishes(): Flux<Dish> {
+        return webClient.get().uri("/slow").retrieve().bodyToFlux(Dish::class.java)
+    }
+
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
+    fun timeoutGetDishes(): Flux<Dish> {
+        return webClient.get().uri("/timeout").retrieve().bodyToFlux(Dish::class.java)
+    }
 }

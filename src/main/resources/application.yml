@@ -18,7 +18,20 @@ resilience4j:
   circuitbreaker:
     configs:
       default:
-        registerHealthIndicator: true
+        register-health-indicator: true
     instances:
       kitchen:
-        baseConfig: default
+        base-config: default
+
+        failure-rate-threshold: 20 # 실패율 임계치
+        slow-call-rate-threshold: 100 # 지연율 임계치
+        slow-call-duration-threshold: 500 # 지연시간 임계치, 이 시간을 초과하면 지연 호출로 판단
+        minimum-number-of-calls: 10 # circuitbreaker 가 실패율, 지연율을 계산하기 전에 필요한 최소 호출 수
+        # 임계치를 넘으면 서킷 오픈
+
+        wait-duration-in-open-state: 1000
+        automatic-transition-from-open-to-half-open-enabled: false
+        # 서킷 오픈 후 1000ms가 지나고 새로운 요청을 처음 시도 했을 때 서킷을 반오픈
+
+        permitted-number-of-calls-in-half-open-state: 5
+        # 서킷 반오픈 상태에서 오픈/클로즈할지 결정하기 위한 호출 수
