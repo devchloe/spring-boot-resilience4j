@@ -35,6 +35,7 @@ resilience4j:
 
         permitted-number-of-calls-in-half-open-state: 5
         # 서킷 반오픈 상태에서 오픈/클로즈할지 결정하기 위한 호출 수
+    circuit-breaker-aspect-order: 1 # citcuitbreaker를 가장 나중에 실행시키겠다.
 
   retry:
     instances:
@@ -47,6 +48,7 @@ resilience4j:
 #          - java.io.IOException
 #        ignore-exceptions: # 재시도 하지 않을 예외 클래스
 #          - com.example.demo.BusinessException
+    retry-aspect-order: 2
 
 logging:
   level:
