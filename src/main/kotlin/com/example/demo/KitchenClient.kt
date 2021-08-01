@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
+import java.io.IOException
 import java.util.*
 
 const val CIRCUIT_BREAKER_KITCHEN = "kitchen"
@@ -21,8 +22,13 @@ class KitchenClient {
 
     @Retry(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
     @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
-//    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
     fun failureGetDishes(): Flux<Dish> {
+        return webClient.get().uri("/failure").retrieve().bodyToFlux(Dish::class.java)
+    }
+
+    @Retry(name = CIRCUIT_BREAKER_KITCHEN)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
+    fun failureGetDishesAndNotRetry(): Flux<Dish> {
         return webClient.get().uri("/failure").retrieve().bodyToFlux(Dish::class.java)
     }
 
