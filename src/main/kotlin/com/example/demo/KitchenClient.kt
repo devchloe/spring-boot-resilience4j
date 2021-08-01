@@ -1,7 +1,6 @@
 package com.example.demo
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
