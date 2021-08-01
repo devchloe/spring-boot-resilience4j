@@ -2,11 +2,11 @@ package com.example.demo
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import io.github.resilience4j.retry.annotation.Retry
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
-import java.io.IOException
 import java.util.*
 
 const val CIRCUIT_BREAKER_KITCHEN = "kitchen"
@@ -37,6 +37,7 @@ class KitchenClient {
         return webClient.get().uri("/slow").retrieve().bodyToFlux(Dish::class.java)
     }
 
+    @TimeLimiter(name = CIRCUIT_BREAKER_KITCHEN)
     @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
     fun timeoutGetDishes(): Flux<Dish> {
         return webClient.get().uri("/timeout").retrieve().bodyToFlux(Dish::class.java)
