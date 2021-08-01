@@ -15,4 +15,19 @@ class PoliteServer(private val kitchen: KitchenService, private val kitchenClien
     fun serveDishesFromRemote(): Flux<Dish> {
         return kitchenClient.getDishes().map { it.deliver() }
     }
+
+    @GetMapping("/v2/order/failure")
+    fun failureServeDishesFromRemote(): Flux<Dish> {
+        return kitchenClient.failureGetDishes().map { it.deliver() }
+    }
+
+    @GetMapping("/v2/order/slow")
+    fun slowServeDishesFromRemote(): Flux<Dish> {
+        return kitchenClient.slowGetDishes().map { it.deliver() }
+    }
+
+    @GetMapping("/v2/order/timeout")
+    fun timeoutServeDishesFromRemote(): Flux<Dish> {
+        return kitchenClient.timeoutGetDishes().map { it.deliver() }
+    }
 }

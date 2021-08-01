@@ -11,7 +11,14 @@ http.createServer(async function (request, response) {
         })).then(() => {
             sendSuccessfulResponse(response)
         })
-    } else {
+    } else if (request.url.startsWith("/timeout")) {
+        await new Promise((resolve => {
+            setTimeout(function () {resolve()}, 1800)
+        })).then(() => {
+            sendSuccessfulResponse(response)
+        })
+    }
+    else {
         sendSuccessfulResponse(response)
     }
 
