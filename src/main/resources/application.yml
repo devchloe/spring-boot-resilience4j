@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure: # 애플리케이션 모니터링을 위한 웹 엔드포인트 노출
+        include: health,prometheus,metrics
+          # 공개할 엔드포인트 지정 - prometheus가 수집하는 메트릭스, micrometer를 사용해서 수집하는 지표
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      backendA:
+        registerHealthIndicator: true
