@@ -1,6 +1,7 @@
 package com.example.demo
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -13,13 +14,14 @@ const val CIRCUIT_BREAKER_KITCHEN = "kitchen"
 class KitchenClient {
     private val webClient: WebClient = WebClient.create("http://localhost:5000")
 
-
     @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
     fun getDishes(): Flux<Dish> {
         return webClient.get().uri("/").retrieve().bodyToFlux(Dish::class.java)
     }
 
-    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
+    @Retry(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
+//    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
     fun failureGetDishes(): Flux<Dish> {
         return webClient.get().uri("/failure").retrieve().bodyToFlux(Dish::class.java)
     }
