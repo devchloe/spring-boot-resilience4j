@@ -25,7 +25,6 @@ function sendSuccessfulResponse(response) {
 }
 
 function randomDish() {
-    debugger;
     const menu = [
         {description: "Sesame chicken"},
         {description: "Lo mein noodles, plain"},

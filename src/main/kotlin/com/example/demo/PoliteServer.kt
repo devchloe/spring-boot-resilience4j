@@ -6,12 +6,12 @@ import reactor.core.publisher.Flux
 
 @RestController
 class PoliteServer(private val kitchen: KitchenService, private val kitchenClient: KitchenClient) {
-    @GetMapping()
+    @GetMapping("/v1/order")
     fun serveDishes(): Flux<Dish> {
         return kitchen.getDishes().map { it.deliver() }
     }
 
-    @GetMapping("/remote")
+    @GetMapping("/v2/order")
     fun serveDishesFromRemote(): Flux<Dish> {
         return kitchenClient.getDishes().map { it.deliver() }
     }
