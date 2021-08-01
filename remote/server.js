@@ -1,22 +1,35 @@
 const http = require('http')
 
 http.createServer(async function (request, response) {
+
     if (request.url.startsWith("/failure")) {
         response.statusCode = 500
         response.write('Failure')
     } else if (request.url.startsWith("/slow")) {
         await new Promise((resolve => {
-            setTimeout(function () {
-                resolve('Success But Slow')
-            }, 800)
-        })).then(resoledMessage => {
-            response.statusCode = 200
-            response.write(resoledMessage)
+            setTimeout(function () {resolve()}, 800)
+        })).then(() => {
+            sendSuccessfulResponse(response)
         })
     } else {
-        response.statusCode = 200
-        response.write('Success')
+        sendSuccessfulResponse(response)
     }
 
     response.end()
 }).listen(5000)
+
+
+function sendSuccessfulResponse(response) {
+    response.writeHead(200, {"Content-Type": "application/json"})
+    response.write(JSON.stringify(randomDish()))
+}
+
+function randomDish() {
+    debugger;
+    const menu = [
+        {description: "Sesame chicken"},
+        {description: "Lo mein noodles, plain"},
+        {description: "Sweet & sour beef"},
+    ]
+    return menu[Math.floor(Math.random() * 3)]
+}

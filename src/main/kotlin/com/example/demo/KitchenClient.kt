@@ -9,6 +9,6 @@ class KitchenClient {
     private val webClient: WebClient = WebClient.create("http://localhost:5000")
 
     fun getDishes(): Flux<Dish> {
-        return webClient.get().uri("/success").retrieve().bodyToFlux(Dish::class.java)
+        return webClient.get().uri("/").retrieve().bodyToFlux(Dish::class.java)
     }
 }
