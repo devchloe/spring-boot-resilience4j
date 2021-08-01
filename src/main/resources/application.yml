@@ -35,3 +35,13 @@ resilience4j:
 
         permitted-number-of-calls-in-half-open-state: 5
         # 서킷 반오픈 상태에서 오픈/클로즈할지 결정하기 위한 호출 수
+
+  retry:
+    instances:
+      kitchen:
+        max-attempts: 3 # 최대 재시도 횟수
+        wait-duration: 5s # 재시도 간격, 얼마 간격으로 재시도할지
+
+logging:
+  level:
+    org.springframework.web.reactive: debug
