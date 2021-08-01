@@ -16,6 +16,9 @@ management:
 
 resilience4j:
   circuitbreaker:
-    instances:
-      backendA:
+    configs:
+      default:
         registerHealthIndicator: true
+    instances:
+      kitchen:
+        baseConfig: default
