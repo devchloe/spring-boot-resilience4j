@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
 import java.util.*
+import java.util.concurrent.TimeoutException
 
 const val CIRCUIT_BREAKER_KITCHEN = "kitchen"
 
@@ -37,13 +38,24 @@ class KitchenClient {
         return webClient.get().uri("/slow").retrieve().bodyToFlux(Dish::class.java)
     }
 
+    @Retry(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
     @TimeLimiter(name = CIRCUIT_BREAKER_KITCHEN)
     @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN)
+    fun timeoutGetDishesWithRetry(): Flux<Dish> {
+        return webClient.get().uri("/timeout").retrieve().bodyToFlux(Dish::class.java)
+    }
+
+    @TimeLimiter(name = CIRCUIT_BREAKER_KITCHEN)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_KITCHEN, fallbackMethod = "fallback")
     fun timeoutGetDishes(): Flux<Dish> {
         return webClient.get().uri("/timeout").retrieve().bodyToFlux(Dish::class.java)
     }
 
     private fun fallback(webClientResponseException: WebClientResponseException): Flux<Dish> {
+        return Flux.just(randomDish())
+    }
+
+    private fun fallback(timeoutException: TimeoutException): Flux<Dish> {
         return Flux.just(randomDish())
     }
 
