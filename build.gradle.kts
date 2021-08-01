@@ -29,6 +29,8 @@ dependencies {
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+
+	implementation("org.springframework.boot:spring-boot-starter-aop")
 }
 
 dependencyManagement {
