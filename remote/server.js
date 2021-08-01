@@ -17,8 +17,7 @@ http.createServer(async function (request, response) {
         })).then(() => {
             sendSuccessfulResponse(response)
         })
-    }
-    else {
+    } else {
         sendSuccessfulResponse(response)
     }
 
